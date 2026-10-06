@@ -1,149 +1,162 @@
 # ChronoXP™ Journal
 
-> **A private, neuro-affirming, offline-first journaling companion.**
+> **A private, neuro-affirming, offline-first journaling companion.**  
+> Encrypted at rest. Local-only. Yours forever.
 
 ---
 
-## 🚧 Status
+## Status
 
-**In active development** - MVP targeted for Q2 2026
+**MVP (Phases 0–3) — active development**
 
----
-
-## ✨ What is ChronoXP?
-
-ChronoXP™ Journal is a desktop journaling application designed for people who want:
-
-- **🔒 True Privacy** - 100% offline, zero cloud services, end-to-end encrypted
-- **🤖 Local AI Assistant** - Writing suggestions and auto-tagging that run entirely on your device
-- **🎮 Gentle Gamification** - XP system and hand-painted artifacts that reward consistency without pressure
-- **♿ Neuro-Affirming UX** - Built for ADHD, autism, anxiety, and everyone in between
-- **🎨 Hand-Painted Aesthetic** - Skyrim-inspired RPG art style with visible brush strokes
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Product freeze + `DECISIONS.md` | ✅ Done |
+| 1 | Tauri 2 skeleton + data model + migrations | ✅ Done |
+| 2 | Security core (AES-256-GCM, keychain, app lock, Argon2id) | ✅ Done |
+| 3 | Desktop MVP (timeline, TipTap editor, tags, FTS, export/import) | ✅ Done |
+| 4 | Encrypted Google Drive backup, full importers, biometric | ⏳ Next |
+| 5 | Local AI (Muse, Archivist, Concierge via llama.cpp) | ⏳ Planned |
+| 6 | Mobile (iOS/Android via Tauri 2 mobile) | ⏳ Planned |
 
 ---
 
-## 🛠️ Tech Stack
+## How to Run
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| **Shell** | Tauri 2.x (Rust + WebView) | Cross-platform, secure, lightweight |
-| **Frontend** | React 18 + TypeScript + Tailwind | Modern, type-safe, fast |
-| **Storage** | SQLCipher (encrypted SQLite) | Local-first, AES-256 encryption |
-| **AI Engine** | llama.cpp + Phi-3-mini | Privacy-first, runs 100% offline |
-| **Search** | SQLite FTS5 + sqlite-vec | Fast keyword + semantic search |
+### Prerequisites
 
----
+**Windows & macOS:**
 
-## 🎯 Core Features
+```bash
+# Install Node.js 22+ from https://nodejs.org
+# Install Rust from https://rustup.rs
 
-### For Everyone (Free Tier)
-- Unlimited encrypted journaling
-- Calendar, timeline, and tag-based browsing
-- Basic search (keyword)
-- Export to Markdown, JSON, plain text
-- Dark mode & accessibility features
+# Windows: Install Visual Studio Build Tools (C++ workload)
+# macOS: Install Xcode Command Line Tools
+xcode-select --install
+```
 
-### AI Concierge (One-time $1.99)
-- **Muse** - Gentle writing prompts when you're stuck
-- **Archivist** - Automatic tag suggestions
-- **Concierge** - Semantic search ("find entries about hope")
+**Linux (Ubuntu/Debian):**
 
-### Extras (Subscription Tiers)
-- Records Cavern (gamification with hand-painted artifacts)
-- Advanced analytics (mood trends, writing patterns)
-- Priority support and future features
+```bash
+sudo apt-get install -y \
+  libwebkit2gtk-4.1-dev \
+  libgtk-3-dev \
+  libayatana-appindicator3-dev \
+  librsvg2-dev \
+  patchelf
+```
 
----
+### Development
 
-## 📖 Documentation
+```bash
+git clone https://github.com/TheSeeker713/chronoxp
+cd chronoxp
 
-Full product documentation (vision, wireframes, architecture) will be released publicly **at MVP launch**.
+npm install
+npm run tauri dev
+```
 
-Until then, development happens in private to protect the roadmap and avoid idea cloning.
+The Vite dev server starts on `http://localhost:1420` and the Tauri window opens automatically.
+Rust recompiles on save; React/TS reloads via Vite HMR.
 
----
+### Production Build
 
-## 🤝 Contributing
+```bash
+npm run tauri build
+```
 
-Not accepting external contributions until MVP is released. After launch, this project will welcome:
-- Bug reports
-- Feature requests
-- Community translations
-- Hand-painted artifact submissions (artists welcome!)
+Output: `src-tauri/target/release/bundle/`
 
----
+### Tests
 
-## 📜 License
+```bash
+# Frontend (Vitest)
+npm test
 
-License will be determined before MVP release. Considering:
-- **GPL-3.0** (open-source, copyleft)
-- **AGPL-3.0** (prevents cloud-hosted clones)
-- **Fair Source** (source-available, time-delayed open-source)
-
----
-
-## 🌐 Contact
-
-- **Twitter/X**: [@TheSeeker713](https://twitter.com/TheSeeker713) *(if applicable)*
-- **Email**: [your-email] *(if you want to share)*
-- **Discord**: *(coming at beta launch)*
+# Rust unit tests
+cd src-tauri && cargo test
+```
 
 ---
 
-## 🎨 Screenshots
+## Tech Stack
 
-*Coming soon - hand-painted interface reveals at MVP launch*
+| Layer | Technology |
+|-------|-----------|
+| Shell | Tauri 2.x (Rust + WebView) |
+| Frontend | React 19 + TypeScript 5 |
+| Build | Vite 6 + `@tailwindcss/vite` |
+| Styles | Tailwind CSS 4 |
+| Rich text | TipTap 2 (ProseMirror) |
+| State | Zustand 5 |
+| Backend | Rust 1.83 |
+| Database | SQLite via `rusqlite` (bundled) |
+| Encryption | AES-256-GCM (`aes-gcm` crate) |
+| KDF | Argon2id (`argon2` crate) |
+| Keychain | OS-native (`keyring` crate) |
+| Tests | Vitest + cargo test |
 
----
-
-## ❓ FAQ
-
-**Q: When will this be ready?**  
-A: MVP targeted for Q2 2026. Beta testers will be recruited ~1 month before.
-
-**Q: Which platforms?**  
-A: Windows 10/11, macOS 11+, Linux (Ubuntu/Fedora/Arch). Mobile maybe later.
-
-**Q: How much will it cost?**  
-A: Free core features + optional AI ($1.99 one-time) + optional subscription tiers. Full pricing at launch.
-
-**Q: Can I run my own AI models?**  
-A: Not in MVP. Planned for post-1.0 (bring your own GGUF files).
-
-**Q: What about mobile?**  
-A: Desktop first. Mobile (iOS/Android) is on the long-term roadmap if desktop succeeds.
-
-**Q: Why "ChronoXP"?**  
-A: **Chrono** (time) + **XP** (experience points). You earn XP for journaling over time. Also, XP = "experience" as in life experience.
+See [`docs/DECISIONS.md`](docs/DECISIONS.md) for the full architecture decision record.
 
 ---
 
-## 💙 Philosophy
+## Security
 
-> "Your thoughts are not noise. Your feelings are not too much. Your story matters. Keep writing."
-
-ChronoXP is built on the belief that journaling should be:
-- **Private** (no one reads your entries but you)
-- **Encouraging** (not shaming you for missed days)
-- **Accessible** (works for ADHD, dyslexia, low vision, screen readers)
-- **Yours forever** (offline-first, exportable, no vendor lock-in)
-
----
-
-## 🗺️ Roadmap Preview
-
-- ✅ Vision & design (Oct 2025)
-- 🚧 Tauri shell + database (Nov 2025)
-- 🚧 Canvas + autosave (Dec 2025)
-- ⏳ AI integration (Jan-Feb 2026)
-- ⏳ Gamification + hand-painted art (Mar-Apr 2026)
-- ⏳ Beta testing (May 2026)
-- 🎯 **MVP Launch (June 2026)**
+- **Field-level AES-256-GCM** on all `markdown` content. SQLite file is readable metadata only.
+- **Master key** stored in OS keychain (Windows Credential Manager / macOS Keychain / libsecret).
+- **Vault password** (optional): Argon2id(m=64MiB, t=3, p=1) derives a wrap key; master key is
+  wrapped and stored in the `settings` table. Even with DB access, no plaintext without password.
+- **Recovery key**: 52-char base32 of the raw master key, shown **once** on first setup.
+- **Export encryption**: AES-256-GCM + PBKDF2-SHA256 (100,000 iterations) per-archive password.
+- **App lock**: configurable idle timeout (default 15 min); key zeroed from memory on lock.
 
 ---
 
-*Built with ❤️ by [@TheSeeker713](https://github.com/TheSeeker713)*
+## Architecture
+
+```
+chronoxp/
+├── src/                    # React 19 frontend
+│   ├── components/         # LockScreen, Canvas, Library, Search, etc.
+│   ├── stores/             # Zustand (auth, entries, settings)
+│   ├── utils/              # IPC wrappers, time helpers
+│   └── types/              # Shared TypeScript types
+├── src-tauri/              # Rust backend (Tauri 2)
+│   └── src/
+│       ├── lib.rs          # Tauri builder + command registration
+│       ├── crypto/         # AES-GCM, Argon2id, keychain
+│       ├── db/             # SQLite schema + migrations
+│       ├── commands/       # entries, tags, search, export, security, settings
+│       ├── backup/         # BackupProvider trait (stub)
+│       └── importers/      # Importer trait + stubs (Day One, Apple Journal, Markdown)
+├── docs/
+│   ├── DECISIONS.md        # Architecture decision record
+│   └── ...                 # Product docs (vision, wireframes, flows, etc.)
+└── .github/workflows/
+    └── ci.yml              # Windows + macOS + Linux builds + tests
+```
 
 ---
 
-**"Write. Remember. Reflect. Offline. Forever."**
+## Data
+
+- **Location**: OS app-data directory
+  - Windows: `%APPDATA%\app.chronoxp.journal\journal.db`
+  - macOS: `~/Library/Application Support/app.chronoxp.journal/journal.db`
+  - Linux: `~/.local/share/app.chronoxp.journal/journal.db`
+- **No cloud**: zero network calls from the app binary
+- **Export**: `.chrxp` (ZIP, optionally AES-256-GCM encrypted)
+
+---
+
+## License
+
+TBD — options under consideration: GPL-3.0, AGPL-3.0, Fair Source.  
+The code is Jeremy's own work. See [`docs/DECISIONS.md`](docs/DECISIONS.md#7-license).
+
+---
+
+## Philosophy
+
+> *"Your thoughts. Your device. Your pace. No judgment. No tracking. Just a safe space to write, remember, and grow."*
